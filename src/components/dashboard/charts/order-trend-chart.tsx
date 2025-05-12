@@ -1,7 +1,6 @@
-
 "use client"
 
-import * as React from "react"
+import React from "react"
 import { Area, Line, LineChart, CartesianGrid, Dot, Tooltip, XAxis, YAxis, Legend, ReferenceLine } from "recharts"
 import { format } from 'date-fns';
 import {
@@ -46,37 +45,43 @@ export function OrderTrendChart({ data }: OrderTrendChartProps) {
   const yAxisTicks = [0, 250, 500, 750, 1000];
 
   return (
-    <ChartContainer config={chartConfig} className="h-[300px] w-full">
+    <ChartContainer
+      config={chartConfig}
+      className="w-full h-full"
+    >
       <LineChart
         accessibilityLayer
         data={chartData}
         margin={{
           left: 0,
           right: 12,
-          top: 40, 
+          top: 24,
           bottom: 10,
         }}
+        width={undefined}
+        height={undefined}
       >
         <CartesianGrid
-            vertical={false}
-            stroke="hsl(var(--chart-grid-color))" 
-            strokeDasharray="3 3"
+          vertical={true}
+          horizontal={true}
+          stroke="#e5e7eb" // gris claro tailwind slate-200
+          strokeDasharray="3 3"
         />
         <XAxis
           dataKey="displayDate"
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickCount={8} 
+          tickCount={8}
           interval="preserveStartEnd"
         />
         <YAxis
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          domain={[0, 1000]} 
-          ticks={yAxisTicks} 
-          tickFormatter={(value) => Number(value).toFixed(0)} 
+          domain={[0, 1000]}
+          ticks={yAxisTicks}
+          tickFormatter={(value) => Number(value).toFixed(0)}
         />
         <ChartTooltipPrimitive
           cursor={{ stroke: "hsl(var(--border))", strokeDasharray: "3 3" }}
@@ -86,20 +91,28 @@ export function OrderTrendChart({ data }: OrderTrendChartProps) {
             <ChartTooltipContent
               indicator="dot"
               labelFormatter={(label, payload) => {
-                 if (payload && payload.length > 0 && payload[0].payload.date) {
-                   return format(new Date(payload[0].payload.date), 'PPP');
-                 }
-                 return label;
+                if (payload && payload.length > 0 && payload[0].payload.date) {
+                  return format(new Date(payload[0].payload.date), "PPP");
+                }
+                return label;
               }}
               formatter={(value, name, props) => {
                 const configKey = props.dataKey as keyof typeof chartConfig;
                 const config = chartConfig[configKey];
-                const colorValue = config?.color;
-
+                // Forzar color gris claro para previousPeriodOrders en el tooltip
+                const colorValue =
+                  configKey === "previousPeriodOrders"
+                    ? "#b0b0b0"
+                    : config?.color;
                 return (
                   <div className="flex items-center">
-                     <span className="mr-2 h-2.5 w-2.5 rounded-full" style={{ backgroundColor: colorValue }} />
-                    <span>{config?.label || name}: {Number(value).toLocaleString()}</span>
+                    <span
+                      className="mr-2 h-2.5 w-2.5 rounded-full"
+                      style={{ backgroundColor: colorValue }}
+                    />
+                    <span>
+                      {config?.label || name}: {Number(value).toLocaleString()}
+                    </span>
                   </div>
                 );
               }}
@@ -109,33 +122,46 @@ export function OrderTrendChart({ data }: OrderTrendChartProps) {
         <Legend
           verticalAlign="top"
           align="center"
-          wrapperStyle={{ top: 0, right: 10, left:10, lineHeight: '20px' }}
-          content={<ChartLegendContent iconType="line" />} 
+          wrapperStyle={{ top: 0, right: 10, left: 10, lineHeight: "20px" }}
+          content={<ChartLegendContent />}
         />
-
-        <Area 
+        <Line
           dataKey="previousPeriodOrders"
           name={chartConfig.previousPeriodOrders.label}
           type="monotone"
-          fill="var(--chart-area-fill)" 
-          stroke="var(--color-previousPeriodOrders)" 
-          strokeWidth={1} 
+          stroke="#888888" // gris visible
+          strokeWidth={2}
           dot={false}
           activeDot={false}
+          strokeDasharray="4 2"
         />
-        <Line 
+        <Line
           dataKey="currentPeriodOrders"
           name={chartConfig.currentPeriodOrders.label}
           type="monotone"
-          stroke="var(--color-currentPeriodOrders)" 
-          strokeWidth={2} 
-          dot={({key, ...restProps}) => <Dot key={key} {...restProps} r={4} fill="var(--color-currentPeriodOrders)" stroke="hsl(var(--card))" strokeWidth={1}/>} 
+          stroke="var(--color-currentPeriodOrders)"
+          strokeWidth={2}
+          dot={({ key, ...restProps }) => (
+            <Dot
+              key={key}
+              {...restProps}
+              r={4}
+              fill="var(--color-currentPeriodOrders)"
+              stroke="hsl(var(--card))"
+              strokeWidth={1}
+            />
+          )}
           activeDot={{ r: 6, strokeWidth: 1, stroke: "hsl(var(--card))" }}
         />
-        <ReferenceLine y={0} stroke="hsl(var(--chart-grid-color))" strokeDasharray="3 3" ifOverflow="visible" />
+        <ReferenceLine
+          y={0}
+          stroke="hsl(var(--chart-grid-color))"
+          strokeDasharray="3 3"
+          ifOverflow="visible"
+        />
       </LineChart>
     </ChartContainer>
-  )
+  );
 }
 
 export function OrderTrendChartSkeleton() {

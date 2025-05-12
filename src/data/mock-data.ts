@@ -1,4 +1,3 @@
-
 import {
   subDays,
   formatISO,
@@ -35,8 +34,8 @@ const generateDateRange = (endDate: Date, days: number): string[] => {
 
 const TODAY = new Date();
 
-// Generate data for the last year for trend charts as a base
-const DATES_LAST_YEAR = generateDateRange(TODAY, 365 * 2); // Generate 2 years of data for robust previous year comparison
+// Generate data for the last 3 years for trend charts as a base
+const DATES_LAST_YEAR = generateDateRange(TODAY, 365 * 3); // Ampliar a 3 años para cubrir cualquier comparación
 
 const generateRandomData = (count: number, min: number, max: number, volatilityFactor = 0.05) => {
   let lastValue = min + Math.random() * (max - min);
@@ -60,8 +59,8 @@ const generateRandomFloatData = (count: number, min: number, max: number, volati
 
 export const trendDataBase = {
   dates: DATES_LAST_YEAR,
-  orders_last_period: generateRandomData(365 * 2, 100, 950, 0.3),
-  conv_last_period: generateRandomFloatData(365 * 2, 0.5, 1.1, 0.3, 3), // Use 3 decimal for conversion for more precision before *100
+  orders_last_period: generateRandomData(365 * 3, 100, 950, 0.3), // Ahora 3 años
+  conv_last_period: generateRandomFloatData(365 * 3, 0.5, 1.1, 0.3, 3), // Ahora 3 años
 };
 
 
@@ -258,7 +257,8 @@ const baseTopProducts: Product[] = [
   {"id": "4", "name":"iPhone 15 Pro Max 256GB Titanium Blue","revenue": 1_850_670.20,"pct_change":parseFloat(((Math.random() - 0.3) * 30).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=4"},
   {"id": "5", "name":"Samsung Galaxy S24 Ultra 512GB","revenue": 1_675_320.00,"pct_change":parseFloat(((Math.random() - 0.6) * 15).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=5"},
   {"id": "6", "name":"MacBook Air M3 Chip 13-inch","revenue": 1_100_850.30,"pct_change":parseFloat(((Math.random() - 0.4) * 20).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=6"},
-  {"id": "7", "name":"Logitech MX Master 3S Wireless Mouse","revenue": 95_234.80,"pct_change":parseFloat(((Math.random() - 0.5) * 10).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=7"}
+  {"id": "7", "name":"Logitech MX Master 3S Wireless Mouse","revenue": 95_234.80,"pct_change":parseFloat(((Math.random() - 0.5) * 10).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=7"},
+  {"id": "8", "name":"Samsung Galaxy Tab S9 Ultra 512GB","revenue": 1_200_450.00,"pct_change":parseFloat(((Math.random() - 0.4) * 25).toFixed(2)),"img_url":"https://picsum.photos/40/40?random=8"}
 ];
 
 export const getTopProductsData = (currentRange: DateRangeType): Product[] => {

@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -46,94 +45,144 @@ export function ConversionRateChart({ data }: ConversionRateChartProps) {
   const yAxisTicks = [0, 0.003, 0.006, 0.009, 0.012]; 
 
   return (
-    <ChartContainer config={chartConfig} className="h-[300px] w-full">
+    <ChartContainer
+      config={chartConfig}
+      className="full h-full"
+    >
       <LineChart
         accessibilityLayer
         data={chartData}
         margin={{
           left: 0,
           right: 12,
-          top: 40,
+          top: 24,
           bottom: 10,
         }}
+        width={undefined}
+        height={undefined}
       >
         <CartesianGrid
-            vertical={false} 
-            stroke="hsl(var(--chart-grid-color))" 
-            strokeDasharray="3 3"
+          vertical={true}
+          horizontal={true}
+          strokeDasharray="3 3"
+          stroke="#e5e7eb" // gris claro tailwind slate-200
         />
         <XAxis
           dataKey="displayDate"
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickCount={8} 
+          tickCount={8}
           interval="preserveStartEnd"
         />
         <YAxis
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          domain={[0, 0.012]} 
+          domain={[0, 0.012]}
           ticks={yAxisTicks}
-          tickFormatter={(value) => `${(value * 100).toFixed(1)}%`} 
+          tickFormatter={(value) => `${(value * 100).toFixed(1)}%`}
         />
         <ChartTooltipPrimitive
           cursor={{ stroke: "hsl(var(--border))", strokeDasharray: "3 3" }}
-          shared={true} 
+          shared={true}
           trigger="hover"
-          content={
-            <ChartTooltipContent
-              indicator="dot"
-              labelFormatter={(label, payload) => {
-                if (payload && payload.length > 0 && payload[0].payload.date) {
-                  return format(new Date(payload[0].payload.date), 'PPP');
-                }
-                return label;
-             }}
-             formatter={(value, name, props) => {
-                const configKey = props.dataKey as keyof typeof chartConfig;
-                const config = chartConfig[configKey];
-                const colorValue = config?.color;
-                const formattedValue = typeof value === 'number' ? `${(value * 100).toFixed(2)}%` : `${value}%`;
-
-                return (
-                  <div className="flex items-center">
-                    <span className="mr-2 h-2.5 w-2.5 rounded-full" style={{ backgroundColor: colorValue }} />
-                    <span>{config?.label || name}: {formattedValue}</span>
-                  </div>
-                );
-             }}
-            />
-          }
+          content={(props: any) => {
+            // Ordenar tooltip: primero previousPeriodConv, luego currentPeriodConv
+            const orderedPayload = props?.payload ? [...props.payload] : [];
+            orderedPayload.sort((a: any, b: any) => {
+              if (a.dataKey === "previousPeriodConv") return -1;
+              if (b.dataKey === "previousPeriodConv") return 1;
+              return 0;
+            });
+            return (
+              <ChartTooltipContent
+                {...props}
+                payload={orderedPayload}
+                indicator="dot"
+                labelFormatter={(label: any, payload: any[]) => {
+                  if (
+                    payload &&
+                    payload.length > 0 &&
+                    payload[0].payload.date
+                  ) {
+                    return format(new Date(payload[0].payload.date), "PPP");
+                  }
+                  return label;
+                }}
+                formatter={(value: any, name: any, props: any) => {
+                  const configKey = props.dataKey as keyof typeof chartConfig;
+                  const config = chartConfig[configKey];
+                  // Forzar color gris claro para previousPeriodConv en el tooltip
+                  const colorValue =
+                    configKey === "previousPeriodConv"
+                      ? "#b0b0b0"
+                      : config?.color;
+                  const formattedValue =
+                    typeof value === "number"
+                      ? `${(value * 100).toFixed(2)}%`
+                      : `${value}%`;
+                  return (
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      <span
+                        className="mr-2 h-2.5 w-2.5 rounded-full"
+                        style={{ backgroundColor: colorValue }}
+                      />
+                      <span>
+                        {config?.label || name}: {formattedValue}
+                      </span>
+                    </span>
+                  );
+                }}
+              />
+            );
+          }}
         />
         <Legend
           verticalAlign="top"
           align="center"
-          wrapperStyle={{ top: 0, right: 10, left:10, lineHeight: '20px' }} 
-          content={<ChartLegendContent iconType="line" />} 
+          wrapperStyle={{ top: 0, right: 10, left: 10, lineHeight: "20px" }}
+          content={(props) => {
+            // Ordenar leyenda: primero previousPeriodConv, luego currentPeriodConv
+            const items = props.payload ? [...props.payload] : [];
+            items.sort((a, b) => {
+              if (a.dataKey === "previousPeriodConv") return -1;
+              if (b.dataKey === "previousPeriodConv") return 1;
+              return 0;
+            });
+            return <ChartLegendContent payload={items} />;
+          }}
         />
         <Line
           dataKey="currentPeriodConv"
           name={chartConfig.currentPeriodConv.label}
           type="monotone"
-          stroke="var(--color-currentPeriodConv)" 
-          strokeWidth={2} 
-          dot={({key, ...restProps}) => <Dot key={key} {...restProps} r={4} fill="var(--color-currentPeriodConv)" stroke="hsl(var(--card))" strokeWidth={1}/>} 
+          stroke="var(--color-currentPeriodConv)"
+          strokeWidth={2}
+          dot={({ key, ...restProps }) => (
+            <Dot
+              key={key}
+              {...restProps}
+              r={4}
+              fill="var(--color-currentPeriodConv)"
+              stroke="hsl(var(--card))"
+              strokeWidth={1}
+            />
+          )}
           activeDot={{ r: 6, strokeWidth: 1, stroke: "hsl(var(--card))" }}
         />
         <Line
           dataKey="previousPeriodConv"
           name={chartConfig.previousPeriodConv.label}
           type="monotone"
-          stroke="var(--color-previousPeriodConv)" 
-          strokeWidth={1} 
-          dot={false} 
+          stroke="#b0b0b0"
+          strokeWidth={1}
+          dot={false}
           activeDot={false}
         />
       </LineChart>
     </ChartContainer>
-  )
+  );
 }
 
 export function ConversionRateChartSkeleton() {

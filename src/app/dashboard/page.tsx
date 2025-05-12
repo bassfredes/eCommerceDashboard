@@ -1,4 +1,3 @@
-
 "use client";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
@@ -71,7 +70,19 @@ export default function DashboardPage() {
 
   const getEffectiveComparisonDateRange = React.useCallback((): DateRangeType => {
     const currentRange = getCurrentDateRange();
-    return getComparisonDateRange(currentRange, selectedComparisonKey, customComparisonPeriod);
+    let customComparisonRange: DateRangeType | undefined = undefined;
+    if (
+      selectedComparisonKey === "custom" &&
+      customComparisonPeriod &&
+      customComparisonPeriod.from &&
+      customComparisonPeriod.to
+    ) {
+      customComparisonRange = {
+        from: customComparisonPeriod.from,
+        to: customComparisonPeriod.to,
+      };
+    }
+    return getComparisonDateRange(currentRange, selectedComparisonKey, customComparisonRange);
   }, [getCurrentDateRange, selectedComparisonKey, customComparisonPeriod]);
 
 
@@ -171,26 +182,32 @@ export default function DashboardPage() {
 
         {isLoading ? <DetailMetricsDisplaySkeleton /> : <DetailMetricsDisplay />}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-1 shadow-lg rounded-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_2fr_1.2fr] gap-6 h-[405px] min-h-0">
+          <Card className="lg:col-span-1 shadow-lg rounded-xl h-full min-h-0 flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-foreground">Order Trend Analysis</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="h-full flex flex-col justify-between min-h-0">
               {isLoading ? <OrderTrendChartSkeleton /> : <OrderTrendChart data={currentTrendData} />}
             </CardContent>
           </Card>
-          <Card className="lg:col-span-1 shadow-lg rounded-xl">
+          <Card className="lg:col-span-1 shadow-lg rounded-xl h-full min-h-0 flex flex-col">
             <CardHeader>
-              <CardTitle className="text-xl font-semibold text-foreground">Conversion Rate <span className="text-sm text-muted-foreground">(Online store only)</span></CardTitle>
+              <CardTitle className="text-xl font-semibold text-foreground">
+                Conversion Rate <span className="text-sm text-muted-foreground">(Online store only)</span>
+              </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="h-full flex flex-col justify-between min-h-0">
               {isLoading ? <ConversionRateChartSkeleton /> : <ConversionRateChart data={currentTrendData} />}
             </CardContent>
           </Card>
-          <div className="lg:col-span-1">
-             {isLoading ? <TopProductsSkeleton /> : <TopProducts products={currentTopProducts} />}
-          </div>
+          {/* Espacio vacío para mantener la proporción del grid, pero sin panel de productos aquí */}
+          <div className="hidden lg:block" />
+        </div>
+
+        {/* Panel de productos debajo de los gráficos, ocupando todo el ancho */}
+        <div className="w-full">
+          {isLoading ? <TopProductsSkeleton /> : <TopProducts products={currentTopProducts} />}
         </div>
 
         {isLoading ? <SalesFunnelSkeleton /> : <SalesFunnel data={currentSalesFunnelData} />}
