@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif; /* Updated to use --font-inter */
+}
+
+@layer base {
+  :root {
+    --background: 220 20% 98%; /* Light cool gray */
+    --foreground: 220 10% 10%; /* Dark cool gray */
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 10%;
+
+    --primary: 207 70% 53%; /* Blue #3490dc */
+    --primary-h: 207;
+    --primary-s: 70%;
+    --primary-l: 53%;
+    --primary-foreground: 0 0% 100%; /* White for contrast with blue */
+
+    --secondary: 215 20% 85%; /* General secondary UI color, e.g. for buttons */
+    --secondary-foreground: 220 10% 20%; 
+
+    --muted: 220 15% 90%; /* Lighter gray for muted elements */
+    --muted-foreground: 220 10% 45%; 
+
+    --accent: 262 78% 70%; /* Purple #9f7aea */
+    --accent-foreground: 0 0% 100%; /* White for contrast with purple */
+
+    --destructive: 0 79% 57%; /* Red #e53e3e */
+    --destructive-foreground: 0 0% 100%;
+
+    --positive: 145 48% 42%; /* Green #38a169 */
+    --positive-foreground: 0 0% 100%;
+
+    --border: 220 14% 90%; /* #E2E8F0 */
+    --input: 220 14% 90%; /* #E2E8F0 */
+    --ring: 207 70% 53%; /* Blue for focus rings */
+
+    --radius: 0.5rem;
+
+    /* Chart specific colors */
+    /* --chart-1 (current period blue) - #3490dc from primary */
+    --chart-1: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    
+    /* --chart-2 (previous period line) - A slightly darker gray than border for better contrast */
+    --chart-2-h: 220; 
+    --chart-2-s: 14%; 
+    --chart-2-l: 75%; /* Darker gray, e.g., HSL for something like slate-300/tailwind gray-300 */
+    --chart-2: hsl(var(--chart-2-h), var(--chart-2-s), var(--chart-2-l)); 
+    
+    /* Area fill for OrderTrendChart, derived from chart-2 with opacity */
+    --chart-area-fill: hsla(var(--chart-2-h), var(--chart-2-s), var(--chart-2-l), 0.1); 
+    
+    --chart-grid-color: hsl(var(--border)); /* #E2E8F0 - Grid lines */
+
+    --chart-3: hsl(var(--accent));
+    --chart-4: 35 92% 60%; /* Orange */
+    --chart-5: 140 50% 55%; 
+
+    /* Sidebar */
+    --sidebar-background: 220 20% 96%;
+    --sidebar-foreground: 220 10% 25%;
+    --sidebar-primary: hsl(var(--primary));
+    --sidebar-primary-foreground: hsl(var(--primary-foreground));
+    --sidebar-accent: hsl(var(--accent));
+    --sidebar-accent-foreground: hsl(var(--accent-foreground));
+    --sidebar-border: 220 15% 85%;
+    --sidebar-ring: hsl(var(--ring));
+  }
+
+  .dark {
+    --background: 220 10% 10%;
+    --foreground: 220 20% 98%;
+
+    --card: 220 10% 12%;
+    --card-foreground: 220 20% 98%;
+
+    --popover: 220 10% 12%;
+    --popover-foreground: 220 20% 98%;
+
+    --primary: 207 70% 53%; 
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 10% 25%; 
+    --secondary-foreground: 220 20% 90%;
+    
+    --muted: 220 10% 20%;
+    --muted-foreground: 220 15% 60%;
+
+    --accent: 262 78% 70%; 
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 75% 65%; 
+    --destructive-foreground: 0 0% 100%;
+    
+    --positive: 145 55% 50%; 
+    --positive-foreground: 0 0% 100%;
+
+    --border: 220 10% 20%; /* Darker border for dark mode grid */
+    --input: 220 10% 20%;
+    --ring: 207 70% 53%;
+
+    /* Chart specific colors */
+    /* --chart-1 (current period blue) uses HSL from :root */
+    
+    /* --chart-2 (previous period dark gray for lines) - #656c80 (hsl(220, 15%, 45%)) */
+    /* This already has good contrast with the dark mode border */
+    --chart-2-dark-h: 220;
+    --chart-2-dark-s: 15%;
+    --chart-2-dark-l: 45%; 
+    --chart-2: hsl(var(--chart-2-dark-h), var(--chart-2-dark-s), var(--chart-2-dark-l)); 
+    
+    /* Area fill for OrderTrendChart in dark mode, derived from dark mode --chart-2 */
+    --chart-area-fill: hsla(var(--chart-2-dark-h), var(--chart-2-dark-s), var(--chart-2-dark-l), 0.1); 
+    
+    /* --chart-grid-color will use the dark mode --border */
+
+    /* Sidebar */
+    --sidebar-background: 220 10% 12%;
+    --sidebar-foreground: 220 20% 90%;
+    --sidebar-primary: hsl(var(--primary));
+    --sidebar-primary-foreground: hsl(var(--primary-foreground));
+    --sidebar-accent: hsl(var(--accent));
+    --sidebar-accent-foreground: hsl(var(--accent-foreground));
+    --sidebar-border: 220 10% 20%;
+    --sidebar-ring: hsl(var(--ring));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
