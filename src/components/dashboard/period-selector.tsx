@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from 'react';
@@ -72,72 +71,72 @@ export function PeriodSelector({
     return option ? option.label : "Select comparison";
   };
 
-
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-2 bg-card border rounded-lg shadow-sm w-full">
-      {/* Period Selection */}
-      <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
-        <CalendarDays className="h-5 w-5 text-muted-foreground ml-2 flex-shrink-0" />
-        <Label htmlFor="period-select" className="text-sm font-medium whitespace-nowrap sr-only sm:not-sr-only">Period:</Label>
-        
-        <Select value={selectedPeriodKey} onValueChange={onPeriodKeyChange}>
-          <SelectTrigger 
-            id="period-select" 
-            className={`h-9 shadow-sm ${selectedPeriodKey === 'custom' ? 'sm:w-[260px]' : 'sm:w-[180px]'} w-full`}
-          >
-            <SelectValue placeholder="Select period">{displayPeriodValue()}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {periodOptions.map(option => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {selectedPeriodKey === 'custom' && (
-          <DateRangePicker
-            date={customPeriod}
-            onDateChange={onCustomPeriodChange}
-            disabled={disableFutureDates}
-            className="w-full sm:w-[260px]"
-            triggerClassName="w-full sm:w-[260px]" // Ensure this trigger is styled correctly
-            align="start"
-          />
-        )}
-      </div>
-
-      {/* Comparison Period Selection */}
-      <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
-        <Label htmlFor="comparison-select" className="text-sm font-medium whitespace-nowrap sr-only sm:not-sr-only">Compare with:</Label>
-        
-        <Select value={selectedComparisonKey} onValueChange={onComparisonKeyChange}>
-          <SelectTrigger 
-            id="comparison-select" 
-            className={`h-9 shadow-sm ${selectedComparisonKey === 'custom' ? 'sm:w-[260px]' : 'sm:w-[180px]'} w-full mr-0 sm:mr-2`}
-          >
-            <SelectValue placeholder="Select comparison">{displayComparisonValue()}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {comparisonOptions.map(option => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {selectedComparisonKey === 'custom' && (
-           <DateRangePicker
-            date={customComparisonPeriod}
-            onDateChange={onCustomComparisonPeriodChange}
-            disabled={disableFutureDates}
-            className="w-full sm:w-[260px]"
-            triggerClassName="w-full sm:w-[260px]" // Ensure this trigger is styled
-            align="start"
-          />
-        )}
+    <div className="flex flex-col gap-2 w-full">
+      {/* Barra superior con título y selectores */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-2">
+        <h2 className="text-lg font-semibold text-foreground mb-1 sm:mb-0">Overview</h2>
+        <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto justify-end">
+          {/* Period Selection */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <CalendarDays className="h-5 w-5 text-muted-foreground ml-2 flex-shrink-0" />
+            <Label htmlFor="period-select" className="text-sm font-medium whitespace-nowrap sr-only sm:not-sr-only">Period:</Label>
+            <Select value={selectedPeriodKey} onValueChange={onPeriodKeyChange}>
+              <SelectTrigger 
+                id="period-select" 
+                className={`h-9 shadow-sm ${selectedPeriodKey === 'custom' ? 'sm:w-[220px]' : 'sm:w-[140px]'} w-full min-w-[120px]`}
+              >
+                <SelectValue placeholder="Select period">{displayPeriodValue()}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {periodOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedPeriodKey === 'custom' && (
+              <DateRangePicker
+                date={customPeriod}
+                onDateChange={onCustomPeriodChange}
+                disabled={disableFutureDates}
+                className="w-full sm:w-[220px]"
+                triggerClassName="w-full sm:w-[220px]"
+                align="start"
+              />
+            )}
+          </div>
+          {/* Comparison Period Selection */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Label htmlFor="comparison-select" className="text-sm font-medium whitespace-nowrap sr-only sm:not-sr-only">Compare with:</Label>
+            <Select value={selectedComparisonKey} onValueChange={onComparisonKeyChange}>
+              <SelectTrigger 
+                id="comparison-select" 
+                className={`h-9 shadow-sm ${selectedComparisonKey === 'custom' ? 'sm:w-[220px]' : 'sm:w-[140px]'} w-full min-w-[120px]`}
+              >
+                <SelectValue placeholder="Select comparison">{displayComparisonValue()}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {comparisonOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedComparisonKey === 'custom' && (
+              <DateRangePicker
+                date={customComparisonPeriod}
+                onDateChange={onCustomComparisonPeriodChange}
+                disabled={disableFutureDates}
+                className="w-full sm:w-[220px]"
+                triggerClassName="w-full sm:w-[220px]"
+                align="start"
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -170,12 +170,12 @@ export default function DashboardPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => <KpiCardSkeleton key={index} />)
             : kpiCardsData.map(kpiItem => {
-                const { key, ...restKpiProps } = kpiItem;
-                return <KpiCard key={key} {...restKpiProps} isLoading={false} />;
+          const { key, ...restKpiProps } = kpiItem;
+          return <KpiCard key={key} {...restKpiProps} isLoading={false} />;
               })
           }
         </div>
