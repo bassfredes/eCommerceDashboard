@@ -45,16 +45,13 @@ export function OrderTrendChart({ data }: OrderTrendChartProps) {
   const yAxisTicks = [0, 250, 500, 750, 1000];
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="w-full h-full"
-    >
+    <ChartContainer config={chartConfig} className="w-full h-full min-h-[180px] sm:min-h-[220px] md:min-h-[320px]">
       <LineChart
         accessibilityLayer
         data={chartData}
         margin={{
           left: 0,
-          right: 12,
+          right: 0,
           top: 24,
           bottom: 10,
         }}
@@ -122,7 +119,7 @@ export function OrderTrendChart({ data }: OrderTrendChartProps) {
         <Legend
           verticalAlign="top"
           align="center"
-          wrapperStyle={{ top: 0, right: 10, left: 10, lineHeight: "20px" }}
+          wrapperStyle={{ top: 0, right: 0, left: 0, lineHeight: "20px", width: "100%", padding: 0, margin: 0 }}
           content={<ChartLegendContent />}
         />
         <Line

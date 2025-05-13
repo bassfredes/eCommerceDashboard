@@ -170,7 +170,7 @@ export default function DashboardPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => <KpiCardSkeleton key={index} />)
             : kpiCardsData.map(kpiItem => {
@@ -182,27 +182,25 @@ export default function DashboardPage() {
 
         {isLoading ? <DetailMetricsDisplaySkeleton /> : <DetailMetricsDisplay />}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_2fr_1.2fr] gap-6 h-[405px] min-h-0">
-          <Card className="lg:col-span-1 shadow-lg rounded-xl h-full min-h-0 flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="shadow-lg rounded-xl h-full flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-foreground">Order Trend Analysis</CardTitle>
             </CardHeader>
-            <CardContent className="h-full flex flex-col justify-between min-h-0">
+            <CardContent className="h-[220px] md:h-[340px] flex flex-col justify-between">
               {isLoading ? <OrderTrendChartSkeleton /> : <OrderTrendChart data={currentTrendData} />}
             </CardContent>
           </Card>
-          <Card className="lg:col-span-1 shadow-lg rounded-xl h-full min-h-0 flex flex-col">
+          <Card className="shadow-lg rounded-xl h-full flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-foreground">
                 Conversion Rate <span className="text-sm text-muted-foreground">(Online store only)</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-full flex flex-col justify-between min-h-0">
+            <CardContent className="h-[220px] md:h-[340px] flex flex-col justify-between">
               {isLoading ? <ConversionRateChartSkeleton /> : <ConversionRateChart data={currentTrendData} />}
             </CardContent>
           </Card>
-          {/* Espacio vacío para mantener la proporción del grid, pero sin panel de productos aquí */}
-          <div className="hidden lg:block" />
         </div>
 
         {/* Panel de productos debajo de los gráficos, ocupando todo el ancho */}

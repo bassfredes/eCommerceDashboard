@@ -45,16 +45,13 @@ export function ConversionRateChart({ data }: ConversionRateChartProps) {
   const yAxisTicks = [0, 0.003, 0.006, 0.009, 0.012]; 
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="full h-full"
-    >
+    <ChartContainer config={chartConfig} className="w-full h-[220px] md:h-[320px]">
       <LineChart
         accessibilityLayer
         data={chartData}
         margin={{
           left: 0,
-          right: 12,
+          right: 0,
           top: 24,
           bottom: 10,
         }}
@@ -141,7 +138,7 @@ export function ConversionRateChart({ data }: ConversionRateChartProps) {
         <Legend
           verticalAlign="top"
           align="center"
-          wrapperStyle={{ top: 0, right: 10, left: 10, lineHeight: "20px" }}
+          wrapperStyle={{ top: 0, right: 0, left: 0, padding: 0, margin: 0, lineHeight: '20px', width: '100%' }}
           content={(props) => {
             // Ordenar leyenda: primero previousPeriodConv, luego currentPeriodConv
             const items = props.payload ? [...props.payload] : [];
