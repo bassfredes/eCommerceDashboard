@@ -1,28 +1,21 @@
-# eCommerce Dashboard
+# KPI Dashboard
 
-A web application to visualize key metrics and insights for an e-commerce business.
+## Description
+
+This project is a KPI (Key Performance Indicator) Dashboard designed to provide an interactive and insightful visualization of key metrics for a business. It focuses on presenting data in a clear and understandable format, enabling users to quickly grasp performance trends and identify areas for improvement.
 
 ## Features
 
-- Display of sales data (e.g., total revenue, sales trends)
-- Visualization of key performance indicators (KPIs)
-- Presentation of customer data
-- Insights into product performance
-- Data filtering and date range selection
-- Responsive design for various devices
+Based on the project blueprint, the KPI Dashboard includes the following features:
 
-## Technologies Used
+- **Interactive Trend Charts:** Visualize key metrics over time with interactive charts for better understanding of trends and patterns.
+- **Sales Funnel Visualization:** A visual representation of the sales process, showing conversion rates at each stage to identify bottlenecks.
+- **Top Products Ranking:** Display a ranking of top-performing products based on selected criteria.
+- **Period Comparison:** Ability to compare performance metrics between different time periods.
+
+## Stack
 
 * Next.js
 * Recharts
 * Firebase
 * Tailwind CSS
-
-## Installation
-
-1. Clone the repository:
-
-
-## Usage
-
-Explain how to use the dashboard and its different features here.
